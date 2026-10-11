@@ -98,7 +98,7 @@ class Hotel:
         self.room[self.booking[bid]["Room"]]["Status"]="Available"
         del self.booking[bid]
 print("==========================================================================================================")
-print("                                   Hostel Management System")
+print("                                   Hotel Management System")
 print("==========================================================================================================")
 h=Hotel()
 while True:
