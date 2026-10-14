@@ -52,6 +52,8 @@ class Hotel:
                 return
             if self.room[select]["Status"]=="Occupied" or self.room[select]["Status"]=="Reserved" :
                 print("Room is Occupied. Select another room")
+            elif self.room[select]["Status"]=="Maintenance":
+                print("Room is in under maintennace.")
             else:
                 self.room[select]["Status"]="Reserved"
                 check_in=date.fromisoformat(input("enter check_in date(yyyy-mm-dd):"))
