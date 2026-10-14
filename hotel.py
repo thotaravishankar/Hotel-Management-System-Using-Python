@@ -1,4 +1,5 @@
 import uuid
+from threading import Timer
 from datetime import date
 class Hotel:
     def __init__(self):
@@ -7,8 +8,8 @@ class Hotel:
                    201:{"type":"Double-Bed-room","Price":1500,"Status":"Available"},
                    202:{"type":"Double-Bed-room","Price":1500,"Status":"Available"},
                    301:{"type":"Deluxe-Suite-room","Price":2500,"Status":"Available"},
-                   302: {"type": "Premium-Suite", "Price": 4000, "Status": "Available"},
-                   401: {"type": "Premium-Luxury-Suite", "Price": 6000, "Status": "Available"}
+                   302:{"type":"Premium-Suite", "Price": 4000, "Status": "Available"},
+                   401:{"type":"Premium-Luxury-Suite", "Price": 6000, "Status": "Available"}
                    }
         self.guest={}
         self.booking={}
@@ -29,7 +30,7 @@ class Hotel:
         else:
             gid="G"+uuid.uuid4().hex[:5].upper()
             self.guest[gid]={"name":name,"phn":phn}
-            print(f"Guest registered successfully with ID: {gid}")
+            print(f"*********Guest registered successfully with ID: {gid}************")
 
     def guests_list(self):
         if not self.guest:
@@ -49,23 +50,24 @@ class Hotel:
             if select not in self.room:
                 print("Selected Room is Invalid")
                 return
-            if self.room[select]["Status"]=="Occupied" :
+            if self.room[select]["Status"]=="Occupied" or self.room[select]["Status"]=="Reserved" :
                 print("Room is Occupied. Select another room")
             else:
-                self.room[select]["Status"]="Occupied"
+                self.room[select]["Status"]="Reserved"
                 check_in=date.fromisoformat(input("enter check_in date(yyyy-mm-dd):"))
                 check_out=date.fromisoformat(input("enter check_out date(yyyy-mm-dd):"))
                 bid = "B"+uuid.uuid4().hex[:5].upper()
                 nights=(check_out-check_in).days
                 total= nights*self.room[select]["Price"]
-                print(f"{select} Room booked successfully")
+                print(f"**********{select} Room booked successfully**********")
                 self.booking[bid]={"guest id":id,
                                    "name":self.guest[id]["name"],
                                    "Room":select,
                                    "Room Type":self.room[select]["type"],
                                    "Check-IN":check_in,
                                    "Check-OUT":check_out,
-                                   "Price":total}
+                                   "Price":total,
+                                   "Nights":nights}
 
     def view_booking(self):
         if not self.booking:
@@ -75,8 +77,25 @@ class Hotel:
         print("                                                         Bookings List")
         print("==================================================================================================================================================================")
         for i,j in self.booking.items():
-            print(f"Booking ID: {i} | Guest ID: {j["guest id"]} | name: {j["name"]} | Room: {j["Room"]} | Room Type: {j["Room Type"]} | Check-In: {j["Check-IN"]} | Check-OUT: {j["Check-OUT"]}")
+            print(f"Booking ID: {i} | Guest ID: {j["guest id"]} | name: {j["name"]} | Room: {j["Room"]} | Room Type: {j["Room Type"]} | Check-In: {j["Check-IN"]} | Check-OUT: {j["Check-OUT"]} | Nights: {j["nights"]}")
         print("==================================================================================================================================================================")
+
+    def check_in(self):
+        bid=input("enter your booking id:")
+        if bid not in self.booking:
+            print("Not a valid booking id")
+        else:
+            self.room[self.booking[bid]["Room"]]["Status"]="Occupied"
+            print(f"{self.booking[bid]["guest id"]} successfully checked-in")
+
+    def check_out(self):
+        bid=input("enter your booking id:")
+        if bid not in self.booking.keys():
+            print("Not a valid booking id")
+        else:
+            self.room[self.booking[bid]["Room"]]["Status"]="Maintenance"
+            print("Checked-Out success")
+            Timer(120,lambda: self.room[self.booking[bid]["Room"]].update({"Status": "Available"})).start()
 
     def bill(self):
         bid=input("enter your Booking ID:")
@@ -91,25 +110,27 @@ class Hotel:
         print("Name:",self.booking[bid]["name"])
         print("Room Booked:",self.booking[bid]["Room"])
         print("Room Type:",self.booking[bid]["Room Type"])
+        print("Nights:",self.booking[bid]["Nights"])
         print("Total Amount:",self.booking[bid]["Price"])
         print()
         print("**Note: Thanks for choosing our premium hotel. Good Wishes**")
         print("===================================================================================================")
-        self.room[self.booking[bid]["Room"]]["Status"]="Available"
-        del self.booking[bid]
 print("==========================================================================================================")
-print("                                   Hotel Management System")
+print("                                   |Hotel Management System|")
 print("==========================================================================================================")
 h=Hotel()
 while True:
+    print()
     choice=input('''Select option:
     1. View Rooms
     2. Register Guest
     3. Guests List
     4. Book a Room
     5. View Bookings
-    6. Generate Bill
-    7. Exit\n''')
+    6. Check-In
+    7. Check-OUT
+    8. Generate Bill
+    9. Exit\n''')
     if choice=="1":
         h.view_room()
     elif choice=="2":
@@ -121,7 +142,11 @@ while True:
     elif choice=="5":
         h.view_booking()
     elif choice=="6":
-        h.bill()
+        h.check_in()
     elif choice=="7":
+        h.check_out()
+    elif choice=="8":
+        h.bill()
+    elif choice=="9":
         print("**********Thank you visit again***********")
         break
