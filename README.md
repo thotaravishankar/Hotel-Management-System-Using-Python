@@ -152,12 +152,5 @@ Hotel-Management-System/
 
 This project provides practical experience with Python classes and objects, data structures, unique ID generation, date calculations, conditional logic, and asynchronous timer execution. It also demonstrates how core Python concepts can be combined to build a simple real-world management application.
 
-## 👨‍💻 Author
 
-**Your Name**
 
-GitHub: [Your GitHub Profile](https://github.com/YOUR-USERNAME)
-
----
-
-⭐ If you find this project useful, consider giving the repository a star!
