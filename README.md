@@ -116,7 +116,7 @@ Occupied (Check-In)
     ↓
 Maintenance (Check-Out)
     ↓
-Available (After 2 Minutes)
+Available 
 ```
 
 The two-minute maintenance period is intended for demonstration purposes and can be changed in the code.
