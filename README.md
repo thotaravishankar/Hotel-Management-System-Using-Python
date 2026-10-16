@@ -53,7 +53,7 @@ The system uses Python's built-in modules and stores guest, room, and booking in
 **1. Clone the repository**
 
 ```bash
-git clone https://github.com/YOUR-USERNAME/Hotel-Management-System.git
+git clone https://github.com/thotaravishankar/Hotel-Management-System-Using-Python.git
 ```
 
 **2. Navigate to the project directory**
