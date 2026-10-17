@@ -54,8 +54,8 @@ class Hotel:
             if select not in self.room:
                 print("Selected Room is Invalid")
                 return
-            if self.room[select]["Status"]=="Occupied" or self.room[select]["Status"]=="Reserved" :
-                print("Room is Occupied. Select another room")
+            if self.room[select]["Status"]!="Available":
+                print(f"Room is {self.room[select]['Status']}. Select another room")
             else:
                 try:
                     check_in=date.fromisoformat(input("enter check_in date(yyyy-mm-dd):"))
