@@ -102,7 +102,7 @@ class Hotel:
         print("============================================================================================================================================================================================")
 
     def check_in(self):
-        bid=input("enter your booking id:")
+        bid=input("enter your booking id:").strip().upper()
         if bid not in self.booking:
             print("Not a valid booking id")
             return
@@ -114,7 +114,7 @@ class Hotel:
             print("no reserved bookings")
 
     def check_out(self):
-        bid=input("enter your booking id:")
+        bid=input("enter your booking id:").strip().upper()
         if bid not in self.booking.keys():
             print("Not a valid booking id")
             return
@@ -122,12 +122,14 @@ class Hotel:
             self.room[self.booking[bid]['Room']]['Status']="Maintenance"
             self.booking[bid]["Status"]="Checked-OUT"
             print("Checked-Out success")
-            Timer(120,lambda: self.room[self.booking[bid]['Room']].update({"Status": "Available"})).start()
+            t=Timer(120,lambda: self.room[self.booking[bid]['Room']].update({"Status": "Available"}))
+            t.daemon =True
+            t.start()
         else:
             print("room is not checked-in")
 
     def cancel(self):
-        bid=input("enter your booking id:")
+        bid=input("enter your booking id:").strip().upper()
         if bid not in self.booking:
             print("Invalid booking id")
             return
@@ -139,7 +141,7 @@ class Hotel:
             print("cancellation cannot be done")
 
     def bill(self):
-        bid=input("enter your Booking ID:")
+        bid=input("enter your Booking ID:").strip().upper()
         if bid not in self.booking:
             print("Invalid Booking Id")
             return
