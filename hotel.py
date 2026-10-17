@@ -19,7 +19,7 @@ class Hotel:
         print("                                      Available Rooms")
         print("===================================================================================================")
         for i,j in self.room.items():
-            print(f"Room number: {i} | Type: {j['type']} | Price: {j['Price']} | Status: {j["Status"]} ")
+            print(f"Room number: {i} | Type: {j['type']} | Price: {j['Price']} | Status: {j['Status']} ")
         print("===================================================================================================")
 
     def register(self):
@@ -28,19 +28,19 @@ class Hotel:
         if not name or not phn:
             print("Name and Phone Number are required")
         else:
-            gid="G"+uuid.uuid4().hex[:5].upper()
+            gid="G"+uuid.uuid4().hex[:5].upper().strip()
             self.guest[gid]={"name":name,"phn":phn}
             print(f"*********Guest registered successfully with ID: {gid}************")
 
     def guests_list(self):
         if not self.guest:
-            print("No Guests are Registered yet.")
+            print("Guests list Empty")
         else:
             print("=================================================================================================")
             print("                                      Guest List")
             print("=================================================================================================")
             for i,j in self.guest.items():
-                print(f"Guest ID: {i} | Name: {j["name"]} | Phone: {j["phn"]}")
+                print(f"Guest ID: {i} | Name: {j['name']} | Phone: {j['phn']}")
             print("=================================================================================================")
 
     def book_room(self):
@@ -61,29 +61,31 @@ class Hotel:
                 if check_out<=check_in:
                     print("Check-out must be after check-in.")
                     return
-                self.room[select]["Status"] = "Reserved"
-                bid = "B"+uuid.uuid4().hex[:5].upper()
+                self.room[select]['Status'] = "Reserved"
+                bid = "B"+uuid.uuid4().hex[:5].upper().strip()
                 nights=(check_out-check_in).days
-                total= nights*self.room[select]["Price"]
+                total= nights*self.room[select]['Price']
                 print(f"**********{select} Room booked successfully**********")
                 self.booking[bid]={"guest id":gid,
-                                   "name":self.guest[gid]["name"],
+                                   "name":self.guest[gid]['name'],
                                    "Room":select,
-                                   "Room Type":self.room[select]["type"],
+                                   "Room Type":self.room[select]['type'],
                                    "Check-IN":check_in,
                                    "Check-OUT":check_out,
                                    "Price":total,
                                    "Nights":nights}
+        else:
+            print("guest id is invalid")
 
     def view_booking(self):
         if not self.booking:
-            print("No One Booked any Room.")
+            print("Booking list Empty")
             return
         print("=================================================================================================================================================================")
         print("                                                         Bookings List")
         print("==================================================================================================================================================================")
         for i,j in self.booking.items():
-            print(f"Booking ID: {i} | Guest ID: {j["guest id"]} | name: {j["name"]} | Room: {j["Room"]} | Room Type: {j["Room Type"]} | Check-In: {j["Check-IN"]} | Check-OUT: {j["Check-OUT"]} | Nights: {j["Nights"]}")
+            print(f"Booking ID: {i} | Guest ID: {j['guest id']} | name: {j['name']} | Room: {j['Room']} | Room Type: {j['Room Type']} | Check-In: {j['Check-IN']} | Check-OUT: {j['Check-OUT']} | Nights: {j['Nights']}")
         print("==================================================================================================================================================================")
 
     def check_in(self):
@@ -91,24 +93,24 @@ class Hotel:
         if bid not in self.booking:
             print("Not a valid booking id")
         else:
-            self.room[self.booking[bid]["Room"]]["Status"]="Occupied"
-            print(f"{self.booking[bid]["guest id"]} successfully checked-in")
+            self.room[self.booking[bid]['Room']]['Status']="Occupied"
+            print(f"{self.booking[bid]['guest id']} successfully checked-in")
 
     def check_out(self):
         bid=input("enter your booking id:")
         if bid not in self.booking.keys():
             print("Not a valid booking id")
         else:
-            self.room[self.booking[bid]["Room"]]["Status"]="Maintenance"
+            self.room[self.booking[bid]['Room']]['Status']="Maintenance"
             print("Checked-Out success")
-            Timer(120,lambda: self.room[self.booking[bid]["Room"]].update({"Status": "Available"})).start()
+            Timer(120,lambda: self.room[self.booking[bid]['Room']].update({"Status": "Available"})).start()
 
     def cancel(self):
         bid=input("enter your booking id:")
         if bid not in self.booking:
             print("Invalid booking id")
             return
-        self.room[self.booking[bid]["Room"]]["Status"]="Available"
+        self.room[self.booking[bid]['Room']]['Status']="Available"
         del self.booking[bid]
         print("Room Cancelled Successfully")
 
@@ -117,17 +119,17 @@ class Hotel:
         if bid not in self.booking:
             print("Invalid Booking Id")
             return
-        self.booking[bid]["Status"]="Completed"
+        self.booking[bid]['Status']="Completed"
         print("===================================================================================================")
         print("                                       Bill Receipt")
         print("===================================================================================================")
         print("Booking ID:",bid)
-        print("Guest ID:",self.booking[bid]["guest id"])
-        print("Name:",self.booking[bid]["name"])
-        print("Room Booked:",self.booking[bid]["Room"])
-        print("Room Type:",self.booking[bid]["Room Type"])
-        print("Nights:",self.booking[bid]["Nights"])
-        print("Total Amount:",self.booking[bid]["Price"])
+        print("Guest ID:",self.booking[bid]['guest id'])
+        print("Name:",self.booking[bid]['name'])
+        print("Room Booked:",self.booking[bid]['Room'])
+        print("Room Type:",self.booking[bid]['Room Type'])
+        print("Nights:",self.booking[bid]['Nights'])
+        print("Total Amount:",self.booking[bid]['Price'])
         print()
         print("**Note: Thanks for choosing our premium hotel. Good Wishes**")
         print("===================================================================================================")
@@ -168,3 +170,5 @@ while True:
     elif choice=="10":
         print("**********Thank you visit again***********")
         break
+    else:
+        print("Invalid option")
