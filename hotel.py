@@ -8,8 +8,8 @@ class Hotel:
                    201:{"type":"Double-Bed-room","Price":1500,"Status":"Available"},
                    202:{"type":"Double-Bed-room","Price":1500,"Status":"Available"},
                    301:{"type":"Deluxe-Suite-room","Price":2500,"Status":"Available"},
-                   302:{"type":"Premium-Suite", "Price": 4000, "Status": "Available"},
-                   401:{"type":"Premium-Luxury-Suite", "Price": 6000, "Status": "Available"}
+                   302:{"type":"Premium-Suite-room","Price":4000,"Status":"Available"},
+                   401:{"type":"Premium-Luxury-Suite","Price":6000,"Status":"Available"}
                    }
         self.guest={}
         self.booking={}
@@ -19,7 +19,7 @@ class Hotel:
         print("                                      Available Rooms")
         print("===================================================================================================")
         for i,j in self.room.items():
-            print(f"Room number: {i} | Type: {j["type"]} | Price: {j["Price"]} | Status: {j["Status"]} ")
+            print(f"Room number: {i} | Type: {j['type']} | Price: {j['Price']} | Status: {j["Status"]} ")
         print("===================================================================================================")
 
     def register(self):
@@ -44,26 +44,30 @@ class Hotel:
             print("=================================================================================================")
 
     def book_room(self):
-        id=input("enter your guestid:")
-        if id in self.guest.keys():
+        gid=input("enter your guest id:")
+        if gid in self.guest.keys():
             select=int(input("select room number:"))
             if select not in self.room:
                 print("Selected Room is Invalid")
                 return
             if self.room[select]["Status"]=="Occupied" or self.room[select]["Status"]=="Reserved" :
                 print("Room is Occupied. Select another room")
-            elif self.room[select]["Status"]=="Maintenance":
-                print("Room is in under maintennace.")
             else:
-                self.room[select]["Status"]="Reserved"
                 check_in=date.fromisoformat(input("enter check_in date(yyyy-mm-dd):"))
+                if check_in< date.today():
+                    print("Past dates not allowed")
+                    return
                 check_out=date.fromisoformat(input("enter check_out date(yyyy-mm-dd):"))
+                if check_out<=check_in:
+                    print("Check-out must be after check-in.")
+                    return
+                self.room[select]["Status"] = "Reserved"
                 bid = "B"+uuid.uuid4().hex[:5].upper()
                 nights=(check_out-check_in).days
                 total= nights*self.room[select]["Price"]
                 print(f"**********{select} Room booked successfully**********")
-                self.booking[bid]={"guest id":id,
-                                   "name":self.guest[id]["name"],
+                self.booking[bid]={"guest id":gid,
+                                   "name":self.guest[gid]["name"],
                                    "Room":select,
                                    "Room Type":self.room[select]["type"],
                                    "Check-IN":check_in,
@@ -99,11 +103,21 @@ class Hotel:
             print("Checked-Out success")
             Timer(120,lambda: self.room[self.booking[bid]["Room"]].update({"Status": "Available"})).start()
 
+    def cancel(self):
+        bid=input("enter your booking id:")
+        if bid not in self.booking:
+            print("Invalid booking id")
+            return
+        self.room[self.booking[bid]["Room"]]["Status"]="Available"
+        del self.booking[bid]
+        print("Room Cancelled Successfully")
+
     def bill(self):
         bid=input("enter your Booking ID:")
         if bid not in self.booking:
             print("Invalid Booking Id")
             return
+        self.booking[bid]["Status"]="Completed"
         print("===================================================================================================")
         print("                                       Bill Receipt")
         print("===================================================================================================")
@@ -122,7 +136,6 @@ print("                                   |Hotel Management System|")
 print("==========================================================================================================")
 h=Hotel()
 while True:
-    print()
     choice=input('''Select option:
     1. View Rooms
     2. Register Guest
@@ -131,8 +144,9 @@ while True:
     5. View Bookings
     6. Check-In
     7. Check-OUT
-    8. Generate Bill
-    9. Exit\n''')
+    8. Cancel Booking
+    9. Generate Bill
+    10. Exit\n''')
     if choice=="1":
         h.view_room()
     elif choice=="2":
@@ -148,7 +162,9 @@ while True:
     elif choice=="7":
         h.check_out()
     elif choice=="8":
-        h.bill()
+        h.cancel()
     elif choice=="9":
+        h.bill()
+    elif choice=="10":
         print("**********Thank you visit again***********")
         break
