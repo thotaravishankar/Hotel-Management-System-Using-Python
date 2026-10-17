@@ -44,9 +44,13 @@ class Hotel:
             print("=================================================================================================")
 
     def book_room(self):
-        gid=input("enter your guest id:")
+        gid=input("enter your guest id:").strip().upper()
         if gid in self.guest.keys():
-            select=int(input("select room number:"))
+            try:
+                select=int(input("select room number:"))
+            except ValueError:
+                print("value should be integer")
+                return
             if select not in self.room:
                 print("Selected Room is Invalid")
                 return
@@ -81,7 +85,8 @@ class Hotel:
                                    "Check-IN":check_in,
                                    "Check-OUT":check_out,
                                    "Price":total,
-                                   "Nights":nights}
+                                   "Nights":nights,
+                                   "Status":"Reserved"}
         else:
             print("guest id is invalid")
 
@@ -89,58 +94,72 @@ class Hotel:
         if not self.booking:
             print("Booking list Empty")
             return
-        print("=================================================================================================================================================================")
+        print("============================================================================================================================================================================================")
         print("                                                         Bookings List")
-        print("==================================================================================================================================================================")
+        print("============================================================================================================================================================================================")
         for i,j in self.booking.items():
-            print(f"Booking ID: {i} | Guest ID: {j['guest id']} | name: {j['name']} | Room: {j['Room']} | Room Type: {j['Room Type']} | Check-In: {j['Check-IN']} | Check-OUT: {j['Check-OUT']} | Nights: {j['Nights']}")
-        print("==================================================================================================================================================================")
+            print(f"Booking ID: {i} | Guest ID: {j['guest id']} | name: {j['name']} | Room: {j['Room']} | Room Type: {j['Room Type']} | Check-In: {j['Check-IN']} | Check-OUT: {j['Check-OUT']} | Nights: {j['Nights']} | Status: {j['Status']}")
+        print("============================================================================================================================================================================================")
 
     def check_in(self):
         bid=input("enter your booking id:")
         if bid not in self.booking:
             print("Not a valid booking id")
-        else:
+            return
+        if self.booking[bid]['Status']=="Reserved":
             self.room[self.booking[bid]['Room']]['Status']="Occupied"
+            self.booking[bid]["Status"]="Checked-IN"
             print(f"{self.booking[bid]['guest id']} successfully checked-in")
+        else:
+            print("no reserved bookings")
 
     def check_out(self):
         bid=input("enter your booking id:")
         if bid not in self.booking.keys():
             print("Not a valid booking id")
-        else:
+            return
+        if self.booking[bid]['Status']=="Checked-IN":
             self.room[self.booking[bid]['Room']]['Status']="Maintenance"
+            self.booking[bid]["Status"]="Checked-OUT"
             print("Checked-Out success")
             Timer(120,lambda: self.room[self.booking[bid]['Room']].update({"Status": "Available"})).start()
+        else:
+            print("room is not checked-in")
 
     def cancel(self):
         bid=input("enter your booking id:")
         if bid not in self.booking:
             print("Invalid booking id")
             return
-        self.room[self.booking[bid]['Room']]['Status']="Available"
-        del self.booking[bid]
-        print("Room Cancelled Successfully")
+        if self.booking[bid]["Status"]=="Reserved":
+            self.room[self.booking[bid]['Room']]['Status']="Available"
+            del self.booking[bid]
+            print("Room Cancelled Successfully")
+        else:
+            print("cancellation cannot be done")
 
     def bill(self):
         bid=input("enter your Booking ID:")
         if bid not in self.booking:
             print("Invalid Booking Id")
             return
-        self.booking[bid]['Status']="Completed"
-        print("===================================================================================================")
-        print("                                       Bill Receipt")
-        print("===================================================================================================")
-        print("Booking ID:",bid)
-        print("Guest ID:",self.booking[bid]['guest id'])
-        print("Name:",self.booking[bid]['name'])
-        print("Room Booked:",self.booking[bid]['Room'])
-        print("Room Type:",self.booking[bid]['Room Type'])
-        print("Nights:",self.booking[bid]['Nights'])
-        print("Total Amount:",self.booking[bid]['Price'])
-        print()
-        print("**Note: Thanks for choosing our premium hotel. Good Wishes**")
-        print("===================================================================================================")
+        if self.booking[bid]['Status']=="Checked-OUT":
+            self.booking[bid]['Status']="Completed"
+            print("===================================================================================================")
+            print("                                       Bill Receipt")
+            print("===================================================================================================")
+            print("Booking ID:",bid)
+            print("Guest ID:",self.booking[bid]['guest id'])
+            print("Name:",self.booking[bid]['name'])
+            print("Room Booked:",self.booking[bid]['Room'])
+            print("Room Type:",self.booking[bid]['Room Type'])
+            print("Nights:",self.booking[bid]['Nights'])
+            print("Total Amount:",self.booking[bid]['Price'])
+            print()
+            print("**Note: Thanks for choosing our premium hotel. Good Wishes**")
+            print("===================================================================================================")
+        else:
+            print("room is not checked-out")
 print("==========================================================================================================")
 print("                                   |Hotel Management System|")
 print("==========================================================================================================")
