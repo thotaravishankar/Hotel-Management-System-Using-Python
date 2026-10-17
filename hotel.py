@@ -79,7 +79,7 @@ class Hotel:
         print("                                                         Bookings List")
         print("==================================================================================================================================================================")
         for i,j in self.booking.items():
-            print(f"Booking ID: {i} | Guest ID: {j["guest id"]} | name: {j["name"]} | Room: {j["Room"]} | Room Type: {j["Room Type"]} | Check-In: {j["Check-IN"]} | Check-OUT: {j["Check-OUT"]} | Nights: {j["nights"]}")
+            print(f"Booking ID: {i} | Guest ID: {j["guest id"]} | name: {j["name"]} | Room: {j["Room"]} | Room Type: {j["Room Type"]} | Check-In: {j["Check-IN"]} | Check-OUT: {j["Check-OUT"]} | Nights: {j["Nights"]}")
         print("==================================================================================================================================================================")
 
     def check_in(self):
