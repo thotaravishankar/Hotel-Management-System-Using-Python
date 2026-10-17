@@ -53,11 +53,19 @@ class Hotel:
             if self.room[select]["Status"]=="Occupied" or self.room[select]["Status"]=="Reserved" :
                 print("Room is Occupied. Select another room")
             else:
-                check_in=date.fromisoformat(input("enter check_in date(yyyy-mm-dd):"))
+                try:
+                    check_in=date.fromisoformat(input("enter check_in date(yyyy-mm-dd):"))
+                except ValueError:
+                    print("Invalid date format")
+                    return
                 if check_in< date.today():
                     print("Past dates not allowed")
                     return
-                check_out=date.fromisoformat(input("enter check_out date(yyyy-mm-dd):"))
+                try:
+                    check_out=date.fromisoformat(input("enter check_out date(yyyy-mm-dd):"))
+                except ValueError:
+                    print("invalid date format")
+                    return
                 if check_out<=check_in:
                     print("Check-out must be after check-in.")
                     return
