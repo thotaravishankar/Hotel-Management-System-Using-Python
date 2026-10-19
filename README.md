@@ -1,82 +1,95 @@
 # 🏨 Hotel Management System
 
-A console-based **Hotel Management System built using Python** that helps manage hotel rooms, guest registrations, room bookings, check-in and check-out operations, and bill generation. This project demonstrates Object-Oriented Programming (OOP), dictionary-based data management, UUID generation, date handling, and timer-based room status updates.
+A **console-based Hotel Management System built using Python** that simplifies hotel room management, guest registration, room reservations, check-in and check-out operations, booking cancellation, and bill generation.
+
+The project uses Python's object-oriented programming concepts and built-in modules to manage guests, rooms, bookings, reservation dates, and room availability.
 
 ## 📌 Project Overview
 
-The Hotel Management System is designed to simplify basic hotel operations through a menu-driven command-line interface. It allows users to register guests, manage room reservations, track room availability, calculate booking costs, and generate billing receipts.
+The Hotel Management System provides a simple menu-driven interface for managing hotel operations. Guests can be registered with a unique Guest ID, rooms can be reserved for specific dates, and the system calculates the total booking amount based on the room price and number of nights.
 
-The system uses Python's built-in modules and stores guest, room, and booking information in dictionaries during program execution.
+It also manages the booking lifecycle, from reservation to check-out and bill generation. After check-out, a room is temporarily marked as under maintenance before becoming available again.
 
 ## ✨ Features
 
-- **View Rooms:** Display room numbers, room types, prices, and current statuses.
-- **Guest Registration:** Register guests with their names and phone numbers.
-- **Guest List:** View all registered guests along with their unique guest IDs.
-- **Room Booking:** Reserve rooms using guest IDs and check-in/check-out dates.
-- **Booking Management:** View booking details, including guest information, room details, duration, and total price.
-- **Check-In:** Update the room status to `Occupied`.
-- **Check-Out:** Update the room status to `Maintenance` after checkout.
-- **Automatic Room Availability:** Automatically change the room status to `Available` after a two-minute maintenance period.
-- **Bill Generation:** Generate a receipt containing booking information and the total amount.
+- **View Rooms:** Display room numbers, room types, prices, and current availability.
+- **Guest Registration:** Register guests with their name and a validated 10-digit phone number.
+- **Unique Guest ID:** Generate a unique guest identifier using UUID.
+- **Guest List:** View all registered guests and their details.
+- **Room Booking:** Reserve available rooms using a valid Guest ID.
+- **Date Validation:** Validate check-in and check-out dates and prevent past-date reservations.
+- **Automatic Bill Calculation:** Calculate the total cost based on the number of nights and room price.
+- **Booking Management:** View booking details, including Guest ID, room type, dates, price, and status.
+- **Check-In:** Change a reservation's status to Checked-IN and the room status to Occupied.
+- **Check-Out:** Update the booking status to Checked-OUT and temporarily mark the room as under Maintenance.
+- **Booking Cancellation:** Cancel reservations that have not yet been checked in.
+- **Bill Generation:** Generate a bill receipt after check-out and mark the booking as Completed.
+- **Input Validation:** Handle invalid room numbers, booking IDs, dates, phone numbers, and numeric inputs.
 
-## 🛏️ Room Categories
+## 🛏️ Room Categories and Pricing
 
-| Room Type | Room Numbers | Price per Night |
+| Room Number | Room Type | Price per Night |
 |---|---|---:|
-| Single-Bed Room | 101, 102 | ₹1,000 |
-| Double-Bed Room | 201, 202 | ₹1,500 |
-| Deluxe Suite Room | 301 | ₹2,500 |
-| Premium Suite | 302 | ₹4,000 |
-| Premium Luxury Suite | 401 | ₹6,000 |
+| 101, 102 | Single-Bed Room | ₹1,000 |
+| 201, 202 | Double-Bed Room | ₹1,500 |
+| 301 | Deluxe Suite Room | ₹2,500 |
+| 302 | Premium Suite Room | ₹4,000 |
+| 401 | Premium Luxury Suite | ₹6,000 |
 
-*Prices are defined in the program and can be modified as needed.*
+*Prices are defined in the Python program and can be modified as required.*
 
 ## 🛠️ Technologies Used
 
-- **Programming Language:** Python
-- **Concepts:** Object-Oriented Programming, Classes, Objects, Dictionaries, Conditional Statements, Loops, and Exception Handling concepts
-- **Modules:**
-  - `uuid` — Generates unique guest and booking IDs.
-  - `threading.Timer` — Schedules automatic room status updates.
-  - `datetime.date` — Handles check-in and check-out dates.
+- **Python 3** — Core programming language
+- **OOP (Object-Oriented Programming)** — Class, objects, methods, and instance attributes
+- **`uuid`** — Generate unique guest and booking identifiers
+- **`datetime.date`** — Validate reservation dates and calculate the number of nights
+- **`re` (Regular Expressions)** — Validate 10-digit phone numbers
+- **`threading.Timer`** — Automatically make a checked-out room available again after a 120-second maintenance period
+- **Dictionaries** — Store room, guest, and booking information
 
-## ⚙️ How to Run the Project
+## ⚙️ Installation and Setup
 
 ### Prerequisites
 
-- Python 3.10 or later recommended.
-- A code editor or terminal, such as VS Code or Command Prompt.
+- Python 3.8 or later
+- A code editor such as Visual Studio Code, or a terminal
 
-### Installation
-
-**1. Clone the repository**
+### Step 1: Clone the Repository
 
 ```bash
-git clone https://github.com/thotaravishankar/Hotel-Management-System-Using-Python.git
+git clone https://github.com/ravi/hotel-management-system.git
 ```
 
-**2. Navigate to the project directory**
+### Step 2: Navigate to the Project Directory
 
 ```bash
-cd Hotel-Management-System
+cd hotel-management-system
 ```
 
-**3. Run the Python program**
+### Step 3: Run the Program
 
-Replace `hotel.py` with your actual Python filename if it is different.
+Save the Python code in a file named `hotel.py`, then execute:
 
 ```bash
 python hotel.py
 ```
 
-No external Python packages are required.
+On some Windows systems, you may need to use:
 
-## 📋 Application Menu
+```bash
+py hotel.py
+```
+
+**Note:** All modules used in this project are part of the Python standard library. No external package installation is required.
+
+## 🚀 How to Use
+
+After running the program, a menu appears with the following options:
 
 ```text
 ==========================================
-       Hotel Management System
+          Hotel Management System
 ==========================================
 
 Select option:
@@ -87,70 +100,91 @@ Select option:
 5. View Bookings
 6. Check-In
 7. Check-OUT
-8. Generate Bill
-9. Exit
+8. Cancel Booking
+9. Generate Bill
+10. Exit
 ```
 
-Select an option from the menu to perform the corresponding operation.
+### Booking Workflow
 
-## 💰 Billing Calculation
+1. Select **View Rooms** to check available rooms and their prices.
+2. Select **Register Guest** and enter a name and a valid 10-digit phone number.
+3. Save the generated Guest ID.
+4. Select **Book a Room** and enter the Guest ID and room number.
+5. Enter the check-in and check-out dates in `YYYY-MM-DD` format.
+6. The system calculates the number of nights and the total booking amount.
+7. Use the generated Booking ID to perform check-in and check-out operations.
+8. Generate the bill after successfully checking out.
+9. Select **Exit** to close the program.
 
-The total booking amount is calculated based on the number of nights and the selected room's price per night.
+## 💰 Bill Calculation
 
-**Formula:**
+The system calculates the total room charge using the following formula:
+
+**Total Amount = Price per Night × Number of Nights**
+
+For example, if a guest books a Double-Bed Room at ₹1,500 per night for 3 nights:
 
 ```text
-Total Amount = Number of Nights × Price per Night
+Price per Night : ₹1,500
+Number of Nights: 3
+Total Amount    : ₹4,500
 ```
 
-For example, booking a room costing ₹1,500 per night for three nights results in a total of ₹4,500.
+## 📊 Booking Status Lifecycle
 
-## 🔄 Room Status Workflow
+A booking progresses through the following statuses:
 
-```text
-Available
-    ↓
-Reserved
-    ↓
-Occupied (Check-In)
-    ↓
-Maintenance (Check-Out)
-    ↓
-Available 
-```
+- `Reserved` — The room has been booked.
+- `Checked-IN` — The guest has checked in.
+- `Checked-OUT` — The guest has checked out.
+- `Completed` — The bill has been generated.
+- `Cancelled` — The reservation has been cancelled before check-in.
 
-The two-minute maintenance period is intended for demonstration purposes and can be changed in the code.
+Room statuses include `Available`, `Reserved`, `Occupied`, and `Maintenance`.
 
 ## 📂 Project Structure
 
 ```text
-Hotel-Management-System/
+hotel-management-system/
 │
 ├── hotel.py
 └── README.md
 ```
 
-## ⚠️ Current Limitations
-
-- Guest, room, and booking data are stored in memory and are lost when the program terminates.
-- The system does not use a database.
-- Advanced validation for dates, overlapping reservations, and invalid user inputs can be added.
-- Room availability is currently managed using a single status per room rather than date-based availability.
-- The two-minute maintenance timer is a demonstration feature, not a production-ready housekeeping workflow.
-
-## 🚀 Future Enhancements
-
-- Integrate MySQL or SQLite for persistent data storage.
-- Add date-based reservations and prevent overlapping bookings.
-- Validate check-in and check-out dates.
-- Add cancellation and booking modification features.
-- Improve error handling and input validation.
-- Add payment tracking and more detailed invoices.
-- Develop a graphical user interface or web application.
-
 ## 🎯 Learning Outcomes
 
-This project provides practical experience with Python classes and objects, data structures, unique ID generation, date calculations, conditional logic, and asynchronous timer execution. It also demonstrates how core Python concepts can be combined to build a simple real-world management application.
+This project demonstrates practical Python programming concepts, including:
 
+- Object-oriented programming and class design
+- Dictionary-based data management
+- Input validation using regular expressions
+- Date handling and date arithmetic
+- Exception handling with `try` and `except`
+- Unique identifier generation
+- Conditional statements and loops
+- Timer-based task execution
+- Implementation of a real-world reservation workflow
 
+## 🔮 Future Enhancements
 
+Potential improvements for future versions include:
+
+- Integrating MySQL or SQLite for persistent data storage
+- Preventing overlapping reservations for the same room
+- Supporting multiple future reservations per room
+- Adding guest search and booking history
+- Implementing advance payments and refunds
+- Generating downloadable PDF invoices
+- Creating a graphical user interface or web application
+- Adding administrator login and access control
+
+## 👨‍💻 Author
+
+**Python Hotel Management System Project**
+
+Developed to practice Python, object-oriented programming, date validation, and real-world booking management logic.
+
+## 📄 License
+
+This project is available for educational and learning purposes. Add a specific open-source license if you intend to distribute or reuse the project under defined terms.
