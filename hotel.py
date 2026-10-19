@@ -1,6 +1,7 @@
 import uuid
 from threading import Timer
 from datetime import date
+import re
 class Hotel:
     def __init__(self):
         self.room={101:{"type":"Single-Bed-room","Price":1000,"Status":"Available"},
@@ -23,14 +24,17 @@ class Hotel:
         print("===================================================================================================")
 
     def register(self):
-        name=input("enter your name:")
+        name=input("enter your name:").capitalize()
         phn=input("enter your phone number:")
+        if not re.fullmatch(r"^\d{10}$",phn):
+            print("Invalid Number.")
+            return
         if not name or not phn:
             print("Name and Phone Number are required")
-        else:
-            gid="G"+uuid.uuid4().hex[:5].upper().strip()
-            self.guest[gid]={"name":name,"phn":phn}
-            print(f"*********Guest registered successfully with ID: {gid}************")
+            return
+        gid="G"+uuid.uuid4().hex[:5].upper().strip()
+        self.guest[gid]={"name":name,"phn":phn}
+        print(f"*********Guest registered successfully with ID: {gid}************")
 
     def guests_list(self):
         if not self.guest:
@@ -95,7 +99,7 @@ class Hotel:
             print("Booking list Empty")
             return
         print("============================================================================================================================================================================================")
-        print("                                                         Bookings List")
+        print("                                                                            Bookings List")
         print("============================================================================================================================================================================================")
         for i,j in self.booking.items():
             print(f"Booking ID: {i} | Guest ID: {j['guest id']} | name: {j['name']} | Room: {j['Room']} | Room Type: {j['Room Type']} | Check-In: {j['Check-IN']} | Check-OUT: {j['Check-OUT']} | Nights: {j['Nights']} | Status: {j['Status']}")
@@ -135,7 +139,7 @@ class Hotel:
             return
         if self.booking[bid]["Status"]=="Reserved":
             self.room[self.booking[bid]['Room']]['Status']="Available"
-            del self.booking[bid]
+            self.booking[bid]['Status']="Cancelled"
             print("Room Cancelled Successfully")
         else:
             print("cancellation cannot be done")
