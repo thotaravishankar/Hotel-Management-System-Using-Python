@@ -34,7 +34,7 @@ class Hotel:
             return
         gid="G"+uuid.uuid4().hex[:5].upper().strip()
         self.guest[gid]={"name":name,"phn":phn}
-        print(f"*********Guest registered successfully with ID: {gid}************")
+        print(f"*********Guest registered successfully with Guest ID: {gid}************")
 
     def guests_list(self):
         if not self.guest:
@@ -81,7 +81,7 @@ class Hotel:
                 bid = "B"+uuid.uuid4().hex[:5].upper().strip()
                 nights=(check_out-check_in).days
                 total= nights*self.room[select]['Price']
-                print(f"**********{select} Room booked successfully**********")
+                print(f"**********{select} Room booked successfully with Booking ID: {bid}**********")
                 self.booking[bid]={"guest id":gid,
                                    "name":self.guest[gid]['name'],
                                    "Room":select,
@@ -159,7 +159,7 @@ class Hotel:
             print("Name:",self.booking[bid]['name'])
             print("Room Booked:",self.booking[bid]['Room'])
             print("Room Type:",self.booking[bid]['Room Type'])
-            print("Nights:",self.booking[bid]['Nights'])
+            print("Nights Stayed:",self.booking[bid]['Nights'])
             print("Total Amount:",self.booking[bid]['Price'])
             print()
             print("**Note: Thanks for choosing our premium hotel. Good Wishes**")
