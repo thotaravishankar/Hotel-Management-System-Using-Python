@@ -58,7 +58,7 @@ It also manages the booking lifecycle, from reservation to check-out and bill ge
 ### Step 1: Clone the Repository
 
 ```bash
-git clone https://github.com/ravi/hotel-management-system.git
+git clone https://github.com/thotaravishankar/Hotel-Management-System-Using-Python.git
 ```
 
 ### Step 2: Navigate to the Project Directory
@@ -185,6 +185,4 @@ Potential improvements for future versions include:
 
 Developed to practice Python, object-oriented programming, date validation, and real-world booking management logic.
 
-## 📄 License
 
-This project is available for educational and learning purposes. Add a specific open-source license if you intend to distribute or reuse the project under defined terms.
